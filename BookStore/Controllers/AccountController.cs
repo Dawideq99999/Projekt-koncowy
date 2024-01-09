@@ -68,10 +68,10 @@ namespace BookStore.Controllers
                 return false;
             }
 
-            // Tutaj można dodać inne reguły walidacji, np. sprawdzenie, czy użytkownik o podanej nazwie już istnieje w bazie danych
+ 
+           // Tutaj można dodać inne reguły walidacji, np. sprawdzenie, czy użytkownik o podanej nazwie już istnieje w bazie danych
 
             return true;
         }
     }
 }
-
