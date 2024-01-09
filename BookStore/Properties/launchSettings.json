@@ -24,5 +24,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=LAPTOP-924ACO6S\\SQLEXPRESS;Database=BookstoreDB;Trusted_Connection=True;"
   }
 }
