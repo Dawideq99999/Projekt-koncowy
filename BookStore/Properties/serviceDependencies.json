@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets",
+      "dynamicId": null
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "LAPTOP-924ACO6S:SQLEXPRES",
+      "dynamicId": null
+    }
+  }
+}
