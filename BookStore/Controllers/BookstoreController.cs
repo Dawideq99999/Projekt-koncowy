@@ -1,4 +1,6 @@
 ﻿using Bookstore.Models;
+using BookStore.Data;
+using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookstore.Controllers;
@@ -50,10 +52,12 @@ public class BookstoreController : Controller
     };
 
     private readonly ILogger<BookstoreController> _logger;
+    private readonly BookDbContext bookDbContext;
 
-    public BookstoreController(ILogger<BookstoreController> logger)
+    public BookstoreController(ILogger<BookstoreController> logger, BookDbContext bookDbContext)
     {
         _logger = logger;
+        this.bookDbContext = bookDbContext;
     }
 
     public IActionResult Index()
@@ -76,11 +80,19 @@ public class BookstoreController : Controller
     // POST: FilmController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(Book book)
+    public ActionResult Create(BookRequest book)
     {
+        var bookReq = new Book
+        {
+            Title = book.Title,
+            Author = book.Author,
+            PageCount = book.PageCount,
+            Isbn = book.Isbn
+        };
 
-        book.Id = books.Count + 1;
-        books.Add(book);
+        //book.Id = books.Count + 1;
+        bookDbContext.Books.Add(bookReq);
+        bookDbContext.SaveChanges();
         return RedirectToAction("Index");
     }
 

@@ -1,7 +1,12 @@
+using BookStore.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<BookDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookDbConnectionString")));
 
 // Dodaj us³ugi autentykacji (zak³adaj¹c prosty mechanizm oparty na sesjach)
 builder.Services.AddAuthentication("CookieAuth")
