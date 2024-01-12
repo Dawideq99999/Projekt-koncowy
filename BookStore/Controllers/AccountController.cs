@@ -1,14 +1,19 @@
-﻿using BookStore.Models;
+﻿using BookStore.Data;
+using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http; // Dodaj using Microsoft.AspNetCore.Http
 using System.Linq;
-using System.Collections.Generic;
 
 namespace BookStore.Controllers
 {
     public class AccountController : Controller
     {
-        // Zakładamy, że mamy dostęp do jakiegoś prostego źródła danych, ale będziemy używać listy jako przykładu
-        private static List<User> registeredUsers = new List<User>();
+        private readonly BookDbContext _context;
+
+        public AccountController(BookDbContext context)
+        {
+            _context = context;
+        }
 
         public IActionResult Login()
         {
@@ -19,12 +24,12 @@ namespace BookStore.Controllers
         public IActionResult Login(User user)
         {
             // Prosta logika weryfikacji - należy ją rozszerzyć o prawdziwą weryfikację z użyciem bazy danych
-            var foundUser = registeredUsers.FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password);
+            var foundUser = _context.Users.FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password);
             if (foundUser != null)
             {
                 // Użytkownik zalogowany poprawnie
-                // Tutaj należy dodać logikę zarządzania sesją
-                // Na przykład: HttpContext.Session.SetString("UserId", foundUser.Id);
+                // Ustaw dane sesji
+                HttpContext.Session.SetString("Username", foundUser.Username);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -53,11 +58,18 @@ namespace BookStore.Controllers
                 return View();
             }
 
-            // Dodajemy użytkownika do listy zarejestrowanych (zamiast do bazy danych)
-            registeredUsers.Add(user);
-            // Tutaj należy dodać logikę zapisu do bazy danych
+            // Dodajemy użytkownika do bazy danych
+            _context.Users.Add(user);
+            _context.SaveChanges();
 
             return RedirectToAction("Login");
+        }
+
+        public IActionResult Logout()
+        {
+            // Czyść dane sesji
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
 
         private bool IsUserValid(User user)
@@ -68,8 +80,7 @@ namespace BookStore.Controllers
                 return false;
             }
 
- 
-           // Tutaj można dodać inne reguły walidacji, np. sprawdzenie, czy użytkownik o podanej nazwie już istnieje w bazie danych
+            // Tutaj można dodać inne reguły walidacji, np. sprawdzenie, czy użytkownik o podanej nazwie już istnieje w bazie danych
 
             return true;
         }

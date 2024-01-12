@@ -1,5 +1,9 @@
+using Bookstore.Models;
 using BookStore.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,5 +50,11 @@ app.UseSession(); // U¿ycie sesji
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<BookDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
