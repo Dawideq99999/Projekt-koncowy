@@ -6,7 +6,7 @@
         public string Username { get; set; }
         public string Password { get; set; }
 
-        // Możesz dodać więcej pól w zależności od wymagań
+        
     }
 
 }
