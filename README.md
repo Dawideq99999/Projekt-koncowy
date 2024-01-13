@@ -54,6 +54,8 @@ Aby dodać nową książkę, wybieramy zakładkę "Bookstore Management Panel" i
 Użytkownicy mogą tworzyć konta w zakładce "Rejestracja", aby to lepiej brzmiało, można dodać, że mogą tworzyć swoje indywidualne konta, które umożliwią im dostęp do funkcji aplikacji.
 10.Admin
 Tylko admin po zalogowaniu może usuwać ewentualnie dodawać książki.
+Admin ma specjalną zakładkę do zarządzania użytkownikami może np. usuwać użytkowników
+
 Jeden z adminów 
 Login:admin haslo:admin
 
