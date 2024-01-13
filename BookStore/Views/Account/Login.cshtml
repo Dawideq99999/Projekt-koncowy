@@ -1,0 +1,71 @@
+﻿@model BookStore.Models.User
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+        }
+
+            .login-container h2 {
+                margin-bottom: 20px;
+            }
+
+        .login-form {
+            display: block;
+           
+        }
+
+            .login-form input[type="text"],
+            .login-form input[type="password"] {
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+
+            .login-form button {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 3px;
+                padding: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+                .login-form button:hover {
+                    background-color: #0056b3;
+                }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form asp-action="Login" method="post" class="login-form">
+            <input type="text" name="Username" placeholder="Username" />
+            <input type="password" name="Password" placeholder="Password" />
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
