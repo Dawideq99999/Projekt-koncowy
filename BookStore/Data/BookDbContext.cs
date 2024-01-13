@@ -8,6 +8,7 @@ namespace BookStore.Data
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Administrator> Administrators { get; set; } // Nowe DbSet dla Administratorów
 
         public BookDbContext(DbContextOptions<BookDbContext> options)
             : base(options)

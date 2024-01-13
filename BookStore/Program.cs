@@ -40,12 +40,11 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseSession(); // U¿ycie sesji
 app.UseRouting();
 
 app.UseAuthentication(); // U¿ycie autentykacji
 app.UseAuthorization();
-
-app.UseSession(); // U¿ycie sesji
 
 app.MapControllerRoute(
     name: "default",

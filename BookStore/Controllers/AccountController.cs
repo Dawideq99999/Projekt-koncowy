@@ -1,7 +1,7 @@
 ﻿using BookStore.Data;
 using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; // Dodaj using Microsoft.AspNetCore.Http
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 
 namespace BookStore.Controllers
@@ -23,18 +23,27 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult Login(User user)
         {
-            // Prosta logika weryfikacji - należy ją rozszerzyć o prawdziwą weryfikację z użyciem bazy danych
+            // Sprawdzenie, czy użytkownik jest administratorem
+            var adminUser = _context.Administrators.FirstOrDefault(a => a.Username == user.Username && a.Password == user.Password);
+
+            if (adminUser != null)
+            {
+                // Ustawienie sesji dla administratora
+                HttpContext.Session.SetString("Username", adminUser.Username);
+                HttpContext.Session.SetString("IsAdmin", "true");
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Logika logowania dla zwykłych użytkowników
             var foundUser = _context.Users.FirstOrDefault(u => u.Username == user.Username && u.Password == user.Password);
             if (foundUser != null)
             {
-                // Użytkownik zalogowany poprawnie
-                // Ustaw dane sesji
                 HttpContext.Session.SetString("Username", foundUser.Username);
+                HttpContext.Session.Remove("IsAdmin"); // Usuń informację o adminie, jeśli jest ustawiona
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                // Błędne dane logowania
                 ViewBag.LoginError = "Invalid username or password";
                 return View();
             }
@@ -48,17 +57,12 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult Register(User user)
         {
-            // Prosta logika rejestracji - należy ją rozszerzyć o prawdziwą obsługę bazy danych
-            // Tutaj można dodać logikę walidacji danych użytkownika przed rejestracją
-
-            // Przykład walidacji:
             if (!IsUserValid(user))
             {
                 ViewBag.RegisterError = "Invalid user data";
                 return View();
             }
 
-            // Dodajemy użytkownika do bazy danych
             _context.Users.Add(user);
             _context.SaveChanges();
 
@@ -67,20 +71,16 @@ namespace BookStore.Controllers
 
         public IActionResult Logout()
         {
-            // Czyść dane sesji
             HttpContext.Session.Clear();
             return RedirectToAction("Index", "Home");
         }
 
         private bool IsUserValid(User user)
         {
-            // Przykładowa walidacja danych użytkownika
             if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Password))
             {
                 return false;
             }
-
-            // Tutaj można dodać inne reguły walidacji, np. sprawdzenie, czy użytkownik o podanej nazwie już istnieje w bazie danych
 
             return true;
         }

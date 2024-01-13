@@ -2,6 +2,7 @@
 using BookStore.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,12 @@ namespace Bookstore.Controllers
         // GET: Bookstore/Create
         public ActionResult Create()
         {
+            // Sprawdź, czy użytkownik jest administratorem
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return Unauthorized(); // Lub przekierowanie do strony logowania
+            }
+
             return View();
         }
 
@@ -40,6 +47,12 @@ namespace Bookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(BookRequest book)
         {
+            // Sprawdź, czy użytkownik jest administratorem
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return Unauthorized(); // Lub przekierowanie do strony logowania
+            }
+
             if (ModelState.IsValid)
             {
                 var newBook = new Book
@@ -62,6 +75,12 @@ namespace Bookstore.Controllers
         // GET: Bookstore/Edit/5
         public ActionResult Edit(int id)
         {
+            // Sprawdź, czy użytkownik jest administratorem
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return Unauthorized(); // Lub przekierowanie do strony logowania
+            }
+
             var book = _bookDbContext.Books.FirstOrDefault(b => b.Id == id);
             return View(book);
         }
@@ -71,6 +90,12 @@ namespace Bookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, BookRequest book)
         {
+            // Sprawdź, czy użytkownik jest administratorem
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return Unauthorized(); // Lub przekierowanie do strony logowania
+            }
+
             var bookToEdit = _bookDbContext.Books.FirstOrDefault(b => b.Id == id);
 
             if (bookToEdit != null)
@@ -89,6 +114,12 @@ namespace Bookstore.Controllers
         // GET: Bookstore/Delete/5
         public ActionResult Delete(int id)
         {
+            // Sprawdź, czy użytkownik jest administratorem
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return Unauthorized(); // Lub przekierowanie do strony logowania
+            }
+
             var book = _bookDbContext.Books.FirstOrDefault(b => b.Id == id);
             return View(book);
         }
@@ -98,6 +129,12 @@ namespace Bookstore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            // Sprawdź, czy użytkownik jest administratorem
+            if (HttpContext.Session.GetString("IsAdmin") != "true")
+            {
+                return Unauthorized(); // Lub przekierowanie do strony logowania
+            }
+
             var bookToRemove = _bookDbContext.Books.FirstOrDefault(b => b.Id == id);
             if (bookToRemove != null)
             {
