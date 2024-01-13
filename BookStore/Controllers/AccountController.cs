@@ -75,6 +75,31 @@ namespace BookStore.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpGet]
+        public IActionResult ManageUsers()
+        {
+            // Pobierz listę użytkowników z bazy danych i przekaż ją do widoku
+            var users = _context.Users.ToList();
+            return View(users);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteUser(int userId)
+        {
+            // Znajdź użytkownika do usunięcia na podstawie przekazanego identyfikatora
+            var userToDelete = _context.Users.Find(userId);
+
+            if (userToDelete != null)
+            {
+                // Usuń użytkownika z bazy danych
+                _context.Users.Remove(userToDelete);
+                _context.SaveChanges();
+            }
+
+            // Przekieruj użytkownika z powrotem na stronę zarządzania użytkownikami
+            return RedirectToAction("ManageUsers");
+        }
+
         private bool IsUserValid(User user)
         {
             if (string.IsNullOrWhiteSpace(user.Username) || string.IsNullOrWhiteSpace(user.Password))
